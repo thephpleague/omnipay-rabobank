@@ -17,6 +17,7 @@ class CompletePurchaseResponse extends AbstractResponse
     public function getCode()
     {
         $data = $this->getInternalData();
+
         return isset($data['responseCode']) ? $data['responseCode'] : null;
     }
 
@@ -30,13 +31,11 @@ class CompletePurchaseResponse extends AbstractResponse
         }
 
         $data = array();
-        foreach (explode('|', $this->data['Data']) as $line)
-        {
-                $line = explode('=', $line, 2);
-                if ( ! empty($line[0]))
-                {
-                        $data[trim($line[0])] = isset($line[1]) ? trim($line[1]) : null;
-                }
+        foreach (explode('|', $this->data['Data']) as $line) {
+            $line = explode('=', $line, 2);
+            if (!empty($line[0])) {
+                $data[trim($line[0])] = isset($line[1]) ? trim($line[1]) : null;
+            }
         }
 
         return $data;

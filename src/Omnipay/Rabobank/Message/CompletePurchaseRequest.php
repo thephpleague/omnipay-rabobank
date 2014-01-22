@@ -2,7 +2,6 @@
 
 namespace Omnipay\Rabobank\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
