@@ -52,7 +52,7 @@ class PurchaseRequest extends AbstractRequest
             '|',
             array(
                 'amount='.$this->getAmountInteger(),
-                'currencyCode='.$this->getCurrency(),
+                'currencyCode='.$this->getCurrencyNumeric(),
                 'merchantId='.$this->getMerchantId(),
                 'normalReturnUrl='.$this->getReturnUrl(),
                 'automaticResponseUrl='.$this->getReturnUrl(),

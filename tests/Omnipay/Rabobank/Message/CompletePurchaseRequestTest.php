@@ -15,7 +15,7 @@ class CompletePurchaseRequestTest extends TestCase
                 'keyVersion' => 'ver',
                 'secretKey' => 'shhhh',
                 'amount' => '10.00',
-                'currency' => 'USD',
+                'currency' => 'EUR',
             )
         );
     }

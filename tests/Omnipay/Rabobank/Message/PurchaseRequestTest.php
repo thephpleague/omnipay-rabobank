@@ -15,7 +15,7 @@ class PurchaseRequestTest extends TestCase
                 'keyVersion' => 'ver',
                 'secretKey' => 'shhhh',
                 'amount' => '10.00',
-                'currency' => 'USD',
+                'currency' => 'EUR',
                 'returnUrl' => 'https://www.example.com/return',
             )
         );
@@ -28,7 +28,7 @@ class PurchaseRequestTest extends TestCase
         $data = $this->request->getData();
 
         $this->assertContains('amount=1000', $data['Data']);
-        $this->assertContains('currencyCode=USD', $data['Data']);
+        $this->assertContains('currencyCode=978', $data['Data']);
         $this->assertContains('merchantId=user', $data['Data']);
         $this->assertContains('keyVersion=ver', $data['Data']);
         $this->assertContains('normalReturnUrl=https://www.example.com/return', $data['Data']);
