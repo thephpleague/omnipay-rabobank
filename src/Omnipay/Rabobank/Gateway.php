@@ -22,7 +22,7 @@ class Gateway extends AbstractGateway
             'merchantId' => '',
             'keyVersion' => '',
             'secretKey' => '',
-            'testMode' => '',
+            'testMode' => false,
         );
     }
 
