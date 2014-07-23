@@ -38,4 +38,15 @@ class CompletePurchaseResponseTest extends TestCase
         $response = new CompletePurchaseResponse($this->getMockRequest(), array());
         $this->assertNull($response->getInternalData());
     }
+    
+    public function testGetData()
+    {
+        $data = array('Data' => 'orderId=6|transactionReference=5|authorisationId=123|paymentMeanBrand=IDEAL');
+        $response = new CompletePurchaseResponse($this->getMockRequest(), $data);
+        
+        $this->assertSame("6", $response->getOrderId());
+        $this->assertSame("5", $response->getTransactionId());
+        $this->assertSame("123", $response->getAuthorisationId());
+        $this->assertSame("IDEAL", $response->getPaymentMethod());
+    }
 }
