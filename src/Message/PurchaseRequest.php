@@ -58,6 +58,7 @@ class PurchaseRequest extends AbstractRequest
                 'automaticResponseUrl='.$this->getReturnUrl(),
                 'transactionReference='.$this->getTransactionId(),
                 'keyVersion='.$this->getKeyVersion(),
+                'paymentMeanBrandList='.$this->getPaymentMethod(),
             )
         );
         $data['InterfaceVersion'] = 'HP_1.0';
