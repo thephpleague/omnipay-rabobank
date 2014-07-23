@@ -43,16 +43,6 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('secretKey', $value);
     }
 
-    public function getIssuer()
-    {
-        return $this->getParameter('issuer');
-    }
-
-    public function setIssuer($value)
-    {
-        return $this->setParameter('issuer', $value);
-    }
-
     public function getData()
     {
         $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount');
@@ -68,7 +58,7 @@ class PurchaseRequest extends AbstractRequest
                 'automaticResponseUrl='.$this->getReturnUrl(),
                 'transactionReference='.$this->getTransactionId(),
                 'keyVersion='.$this->getKeyVersion(),
-                'paymentMeanBrandList='.$this->getIssuer(),
+                'paymentMeanBrandList='.$this->getPaymentMethod(),
             )
         );
         $data['InterfaceVersion'] = 'HP_1.0';
