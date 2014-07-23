@@ -42,10 +42,20 @@ class PurchaseRequest extends AbstractRequest
     {
         return $this->setParameter('secretKey', $value);
     }
+    
+    public function getOrderId()
+    {
+        return $this->getParameter('orderId');
+    }
+
+    public function setOrderId($value)
+    {
+        return $this->setParameter('orderId', $value);
+    }
 
     public function getData()
     {
-        $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount');
+        $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount', 'transactionId', 'returnUrl', 'currency');
 
         $data = array();
         $data['Data'] = implode(
@@ -58,6 +68,8 @@ class PurchaseRequest extends AbstractRequest
                 'automaticResponseUrl='.$this->getReturnUrl(),
                 'transactionReference='.$this->getTransactionId(),
                 'keyVersion='.$this->getKeyVersion(),
+                'paymentMeanBrandList='.$this->getPaymentMethod(),
+                'orderId='.$this->getOrderId(),
             )
         );
         $data['InterfaceVersion'] = 'HP_1.0';

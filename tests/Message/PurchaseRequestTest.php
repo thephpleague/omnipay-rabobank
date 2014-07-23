@@ -17,13 +17,15 @@ class PurchaseRequestTest extends TestCase
                 'amount' => '10.00',
                 'currency' => 'EUR',
                 'returnUrl' => 'https://www.example.com/return',
+                'transactionId' => '5',
             )
         );
     }
 
     public function testGetData()
     {
-        $this->request->setTransactionId('5');
+        $this->request->setPaymentMethod('IDEAL');
+        $this->request->setOrderId('6');
 
         $data = $this->request->getData();
 
@@ -34,6 +36,8 @@ class PurchaseRequestTest extends TestCase
         $this->assertContains('normalReturnUrl=https://www.example.com/return', $data['Data']);
         $this->assertContains('automaticResponseUrl=https://www.example.com/return', $data['Data']);
         $this->assertContains('transactionReference=5', $data['Data']);
+        $this->assertContains('paymentMeanBrandList=IDEAL', $data['Data']);
+        $this->assertContains('orderId=6', $data['Data']);
 
         $this->assertSame('HP_1.0', $data['InterfaceVersion']);
     }
