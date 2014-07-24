@@ -14,7 +14,7 @@ class CompletePurchaseResponseTest extends TestCase
 
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('00', $response->getCode());
-        $this->assertSame('Success', $response->getStatus());
+        $this->assertSame('SUCCESS', $response->getStatus());
         $this->assertSame('Transaction successful. Authorisation accepted (credit card).', $response->getMessage());
     }
 
@@ -43,15 +43,15 @@ class CompletePurchaseResponseTest extends TestCase
     
     public function testGetData()
     {
-        $data = array('Data' => 'orderId=6|transactionReference=5|authorisationId=123|paymentMeanBrand=IDEAL|responseCode=05');
+        $data = array('Data' => 'orderId=6|transactionReference=5|authorisationId=123|paymentMeanBrand=IDEAL|responseCode=17');
         $response = new CompletePurchaseResponse($this->getMockRequest(), $data);
         
         $this->assertSame("6", $response->getOrderId());
         $this->assertSame("5", $response->getTransactionId());
         $this->assertSame("123", $response->getAuthorisationId());
         $this->assertSame("IDEAL", $response->getPaymentMethod());
-        $this->assertSame("Failure", $response->getStatus());
-        $this->assertSame("Refused.", $response->getMessage());
+        $this->assertSame("CANCELLED", $response->getStatus());
+        $this->assertSame("Cancellation of payment by user.", $response->getMessage());
     }
     
     public function testUnknownResponseCode()
@@ -62,7 +62,7 @@ class CompletePurchaseResponseTest extends TestCase
 
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('AA', $response->getCode());
-        $this->assertSame('Unknown', $response->getStatus());
+        $this->assertSame('FAILED', $response->getStatus());
         $this->assertNull($response->getMessage());
     }
 }

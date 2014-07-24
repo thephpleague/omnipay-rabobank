@@ -67,16 +67,13 @@ class CompletePurchaseResponse extends AbstractResponse
     {
         $code = $this->getCode();
         $status = array(
-            '00' => 'Success',
-            '05' => 'Failure',
-            '17' => 'Cancelled',
-            '60' => 'Open',
-            '90' => 'Failure sending in',
-            '97' => 'Expired',
-            '99' => 'Started',
+            '00' => 'SUCCESS',
+            '17' => 'CANCELLED',
+            '60' => 'PENDING',
+            '97' => 'EXPIRED',
         );
 
-        return isset($status[$code]) ? $status[$code] : 'Unknown';
+        return isset($status[$code]) ? $status[$code] : 'FAILED';
     }
 
     public function getTransactionId()
