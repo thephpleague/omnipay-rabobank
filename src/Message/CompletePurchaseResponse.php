@@ -10,8 +10,9 @@ use Omnipay\Common\Message\RequestInterface;
  */
 class CompletePurchaseResponse extends AbstractResponse
 {
-
+    /** @var array The internal (parsed) data */
     protected $i_data;
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +31,52 @@ class CompletePurchaseResponse extends AbstractResponse
     public function getCode()
     {
         return isset($this->i_data['responseCode']) ? $this->i_data['responseCode'] : null;
+    }
+
+    public function getMessage()
+    {
+        $code = $this->getCode();
+        
+        $messages = array(
+            '00' => 'Transaction successful. Authorisation accepted (credit card).',
+            '02' => 'Credit card authorisation limit exceeded. Contact the Support Team Rabo OmniKassa.',
+            '03' => 'Invalid merchant contract.',
+            '05' => 'Refused.',
+            '12' => 'Invalid transaction. Check the fields in the payment request.',
+            '14' => 'Invalid credit card number, invalid card security code, '.
+                    'invalid card (MasterCard) or invalid Card Verification Value (MasterCard or VISA).',
+            '17' => 'Cancellation of payment by user.',
+            '24' => 'Invalid status.',
+            '25' => 'Transaction not found in database.',
+            '30' => 'Invalid format.',
+            '34' => 'Fraud suspicion.',
+            '40' => 'Operation not allowed for this merchant/webshop.',
+            '60' => 'Awaiting status report.',
+            '63' => 'Security problem detected. Transaction terminated.',
+            '75' => 'Maximum number of attempts to enter credit card number (3) exceeded.',
+            '90' => 'Rabo OmniKassa server temporarily unavailable.',
+            '94' => 'Duplicate transaction.',
+            '97' => 'Time period expired. Transaction refused.',
+            '99' => 'Payment page temporarily unavailable.',
+        );
+
+        return isset($messages[$code]) ? $messages[$code] : null;
+    }
+
+    public function getStatus()
+    {
+        $code = $this->getCode();
+        $status = array(
+            '00' => 'Success',
+            '05' => 'Failure',
+            '17' => 'Cancelled',
+            '60' => 'Open',
+            '90' => 'Failure sending in',
+            '97' => 'Expired',
+            '99' => 'Started',
+        );
+
+        return isset($status[$code]) ? $status[$code] : 'Unknown';
     }
 
     public function getTransactionId()
@@ -57,10 +104,6 @@ class CompletePurchaseResponse extends AbstractResponse
      */
     public function getInternalData()
     {
-        if (!is_null($this->i_data)) {
-            return $this->i_data;
-        }
-        
         if (empty($this->data['Data'])) {
             return;
         }
@@ -73,6 +116,6 @@ class CompletePurchaseResponse extends AbstractResponse
             }
         }
 
-        return $this->i_data = $data;
+        return $data;
     }
 }
