@@ -67,7 +67,7 @@ class PurchaseRequest extends AbstractRequest
                 'currencyCode='.$this->getCurrencyNumeric(),
                 'merchantId='.$this->getMerchantId(),
                 'normalReturnUrl='.$this->getReturnUrl(),
-                'automaticResponseUrl='.$this->getReturnUrl(),
+                'automaticResponseUrl='.($this->getNotifyUrl() ?: $this->getReturnUrl()),
                 'transactionReference='.$transRef,
                 'keyVersion='.$this->getKeyVersion(),
                 'paymentMeanBrandList='.$this->getPaymentMethod(),
