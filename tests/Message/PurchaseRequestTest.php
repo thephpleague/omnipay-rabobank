@@ -41,6 +41,16 @@ class PurchaseRequestTest extends TestCase
 
         $this->assertSame('HP_1.0', $data['InterfaceVersion']);
     }
+    
+    public function testGetDifferentNotififyUrl()
+    {
+        $this->request->setNotifyUrl('https://www.example.com/notify');
+
+        $data = $this->request->getData();
+        
+        $this->assertContains('normalReturnUrl=https://www.example.com/return', $data['Data']);
+        $this->assertContains('automaticResponseUrl=https://www.example.com/notify', $data['Data']);
+    }
 
     public function testGenerateSignature()
     {
