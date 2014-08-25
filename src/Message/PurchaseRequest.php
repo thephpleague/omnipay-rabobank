@@ -55,7 +55,9 @@ class PurchaseRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount', 'transactionId', 'returnUrl', 'currency');
+        $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount', 'returnUrl', 'currency');
+        
+        $transRef = $this->getTransactionReference() ?: $this->getTransactionId();
 
         $data = array();
         $data['Data'] = implode(
@@ -66,7 +68,7 @@ class PurchaseRequest extends AbstractRequest
                 'merchantId='.$this->getMerchantId(),
                 'normalReturnUrl='.$this->getReturnUrl(),
                 'automaticResponseUrl='.$this->getReturnUrl(),
-                'transactionReference='.$this->getTransactionId(),
+                'transactionReference='.$transRef,
                 'keyVersion='.$this->getKeyVersion(),
                 'paymentMeanBrandList='.$this->getPaymentMethod(),
                 'orderId='.$this->getOrderId(),
