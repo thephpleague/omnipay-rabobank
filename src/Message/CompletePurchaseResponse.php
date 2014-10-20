@@ -76,9 +76,14 @@ class CompletePurchaseResponse extends AbstractResponse
         return isset($status[$code]) ? $status[$code] : 'FAILED';
     }
 
-    public function getTransactionId()
+    public function getTransactionReference()
     {
         return isset($this->i_data['transactionReference']) ? $this->i_data['transactionReference'] : null;
+    }
+    
+    public function getTransactionId()
+    {
+        return isset($this->i_data['orderId']) ? $this->i_data['orderId'] : null;
     }
 
     public function getPaymentMethod()
@@ -89,11 +94,6 @@ class CompletePurchaseResponse extends AbstractResponse
     public function getAuthorisationId()
     {
         return isset($this->i_data['authorisationId']) ? $this->i_data['authorisationId'] : null;
-    }
-
-    public function getOrderId()
-    {
-        return isset($this->i_data['orderId']) ? $this->i_data['orderId'] : null;
     }
 
     /**
