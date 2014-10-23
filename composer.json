@@ -1,13 +1,15 @@
 {
     "name": "omnipay/rabobank",
     "type": "library",
-    "description": "Rabobank driver for the Omnipay payment processing library",
+    "description": "Rabobank Omnikassa driver for the Omnipay payment processing library",
     "keywords": [
         "gateway",
         "merchant",
         "omnipay",
         "pay",
         "payment",
+        "ideal",
+        "omnikassa",
         "rabobank"
     ],
     "homepage": "https://github.com/thephpleague/omnipay-rabobank",
