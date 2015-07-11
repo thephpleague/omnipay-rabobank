@@ -53,6 +53,16 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('orderId', $value);
     }
 
+    public function getCustomerLanguage()
+    {
+        return $this->getParameter('customerLanguage');
+    }
+
+    public function setCustomerLanguage($value)
+    {
+        return $this->setParameter('customerLanguage', $value);
+    }
+
     public function getData()
     {
         $this->validate('merchantId', 'keyVersion', 'secretKey', 'amount', 'returnUrl', 'currency');
@@ -72,6 +82,7 @@ class PurchaseRequest extends AbstractRequest
                 'keyVersion='.$this->getKeyVersion(),
                 'paymentMeanBrandList='.$this->getPaymentMethod(),
                 'orderId='.$this->getOrderId(),
+                'customerLanguage='.$this->getCustomerLanguage()
             )
         );
         $data['InterfaceVersion'] = 'HP_1.0';

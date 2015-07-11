@@ -26,6 +26,7 @@ class PurchaseRequestTest extends TestCase
     {
         $this->request->setPaymentMethod('IDEAL');
         $this->request->setOrderId('6');
+        $this->request->setCustomerLanguage('EN');
 
         $data = $this->request->getData();
 
@@ -38,6 +39,7 @@ class PurchaseRequestTest extends TestCase
         $this->assertContains('transactionReference=5', $data['Data']);
         $this->assertContains('paymentMeanBrandList=IDEAL', $data['Data']);
         $this->assertContains('orderId=6', $data['Data']);
+        $this->assertContains('customerLanguage=EN', $data['Data']);
 
         $this->assertSame('HP_1.0', $data['InterfaceVersion']);
     }
