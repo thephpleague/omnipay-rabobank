@@ -1,0 +1,7 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "signature": "3cd9acd01e78b094e1ca203706d6615fc9618b97c39acf64a83473270724f327154333b000e73f36c6f1d478ced03142821adffb33b2fa2bf35063d1bbc55ac8",
+  "redirectUrl": "https://www.example.com/redirect"
+}

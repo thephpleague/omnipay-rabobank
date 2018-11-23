@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "signature": "32e3ae97a2a5857b7ffed0e1ef36983c356bd035304d0497f73ed1f2d47bb13481d576a40ed4c8c3564ef8a67abd4850134565aa3a253dae0165fc632a74fd26",
+  "moreOrderResultsAvailable": false,
+  "orderResults": [
+    {
+      "merchantOrderId": "order123",
+      "omnikassaOrderId": "1d0a95f4-2589-439b-9562-c50aa19f9caf",
+      "poiId": "2004",
+      "orderStatus": "IN_PROGRESS",
+      "orderStatusDateTime": "2018-11-22T13:20:03.157+01:00",
+      "errorCode": "",
+      "paidAmount": {
+        "currency": "USD",
+        "amount": "2000"
+      },
+      "totalAmount": {
+        "currency": "EUR",
+        "amount": "4999"
+      }
+    }
+  ]
+}
