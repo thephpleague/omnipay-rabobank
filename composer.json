@@ -28,10 +28,12 @@
         "psr-4": { "Omnipay\\Rabobank\\" : "src/" }
     },
     "require": {
-        "omnipay/common": "~2.0"
+        "php": "^5.6|^7",
+        "omnipay/common": "~3.0"
     },
     "require-dev": {
-        "omnipay/tests": "~2.0"
+        "omnipay/tests": "~3.0",
+        "phpunit/phpunit": "^6.5"
     },
     "extra": {
         "branch-alias": {
