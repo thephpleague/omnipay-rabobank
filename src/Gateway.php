@@ -13,6 +13,8 @@ use Omnipay\Rabobank\Message\Request\StatusRequest;
  */
 class Gateway extends AbstractGateway
 {
+    const SIGNING_HASH_ALGORITHM = 'sha512';
+
     public function getName()
     {
         return 'Rabobank OmniKassa';
@@ -43,7 +45,7 @@ class Gateway extends AbstractGateway
     {
         $data = $this->massageSignatureData($data);
 
-        return hash_hmac('sha512', implode(',', $data), base64_decode($this->getParameter('signingKey')));
+        return hash_hmac(static::SIGNING_HASH_ALGORITHM, implode(',', $data), base64_decode($this->getParameter('signingKey')));
     }
 
     protected function massageSignatureData(array $data)
