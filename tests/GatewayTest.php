@@ -56,6 +56,7 @@ class GatewayTest extends GatewayTestCase
             '',
             'https://www.example.com/return',
             'IDEAL',
+            'FORCE_ONCE'
         ];
 
         $expected = hash_hmac('sha512', implode(',', $data), 'secret');

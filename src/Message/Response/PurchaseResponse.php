@@ -2,7 +2,9 @@
 
 namespace Omnipay\Rabobank\Message\Response;
 
-class PurchaseResponse extends AbstractRabobankResponse
+use Omnipay\Common\Message\RedirectResponseInterface;
+
+class PurchaseResponse extends AbstractRabobankResponse implements RedirectResponseInterface
 {
     /**
      * When you do a `purchase` the request is never successful because

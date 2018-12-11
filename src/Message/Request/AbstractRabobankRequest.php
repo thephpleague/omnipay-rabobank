@@ -33,6 +33,11 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     protected $refreshEndpoint = 'gatekeeper/refresh';
 
     /**
+     * @var string
+     */
+    protected $requestContentType = 'application/json';
+
+    /**
      * @var Gateway
      */
     public $gateway;
@@ -43,30 +48,12 @@ abstract class AbstractRabobankRequest extends AbstractRequest
         $this->gateway = $gateway;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getRefreshToken()
-    {
-        return $this->getParameter('refreshToken');
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setRefreshToken($value)
-    {
-        return $this->setParameter('refreshToken', $value);
-    }
-
     /**
      * @return string
      */
     public function getAccessToken()
     {
-        if(!isset(self::$accessToken)) {
+        if (!isset(self::$accessToken)) {
             $this->setAccessToken($this->fetchAccessToken());
         }
 
@@ -80,6 +67,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     public function setAccessToken($value)
     {
         self::$accessToken = $value;
+
         return $this;
     }
 
@@ -88,11 +76,19 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      */
     public function getBaseUrl()
     {
-        if($this->gateway->getTestMode()) {
+        if ($this->gateway->getTestMode()) {
             return $this->baseUrlTesting;
         }
 
         return $this->baseUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestContentType()
+    {
+        return $this->requestContentType;
     }
 
     /**
@@ -104,9 +100,11 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      */
     protected function sendRequest($method, $endpoint, array $data = null, array $headers = [])
     {
-        if(!isset($headers['Authorization'])) {
+        if (!isset($headers['Authorization'])) {
             $headers['Authorization'] = 'Bearer ' . $this->getAccessToken();
         }
+
+        $headers['Content-Type'] = $this->getRequestContentType();
 
         $response = $this->httpClient->request(
             $method,
@@ -115,13 +113,13 @@ abstract class AbstractRabobankRequest extends AbstractRequest
             ($data === null || $data === []) ? null : json_encode($data)
         );
 
-        return json_decode($response->getBody(), true);
+        return json_decode((string)$response->getBody(), true);
     }
 
     protected function fetchAccessToken()
     {
         $data = $this->sendRequest(self::GET, $this->refreshEndpoint, null, [
-            'Authorization' => 'Bearer ' . $this->getRefreshToken()
+            'Authorization' => 'Bearer ' . $this->gateway->getRefreshToken(),
         ]);
 
         return $data['token'];

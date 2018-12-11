@@ -38,6 +38,23 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * @return string
+     */
+    public function getRefreshToken()
+    {
+        return $this->getParameter('refreshToken');
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setRefreshToken($value)
+    {
+        return $this->setParameter('refreshToken', $value);
+    }
+
+    /**
      * @param array $data
      * @return string
      */

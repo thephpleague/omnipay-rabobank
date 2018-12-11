@@ -62,6 +62,7 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals('', $data['description']);
         $this->assertEquals('https://www.example.com/return', $data['merchantReturnURL']);
         $this->assertEquals('IDEAL', $data['paymentBrand']);
+        $this->assertEquals('FORCE_ONCE', $data['paymentBrandForce']);
 
         $signatureData = array(
             $data['timestamp'],
@@ -71,7 +72,8 @@ class PurchaseRequestTest extends TestCase
             'EN',
             '',
             'https://www.example.com/return',
-            'IDEAL'
+            'IDEAL',
+            'FORCE_ONCE'
         );
 
         $signature = hash_hmac('sha512', implode(',', $signatureData), 'secret');
