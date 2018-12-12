@@ -40,7 +40,7 @@ class AbstractRabobankResponse extends AbstractResponse
      */
     protected function validateSignature()
     {
-        if(!isset($this->data['signature'])) {
+        if (!isset($this->data['signature'])) {
             return;
         }
 
@@ -49,15 +49,16 @@ class AbstractRabobankResponse extends AbstractResponse
 
         $signature = $this->request->gateway->generateSignature($this->flattenData($signatureData));
 
-        if(!hash_equals($signature, $this->data['signature'])){
+        if (!hash_equals($signature, $this->data['signature'])) {
             throw new InvalidSignatureException('Signature returned from server is invalid');
         }
     }
 
-    protected function flattenData(array $data) {
+    protected function flattenData(array $data)
+    {
         $flattened = [];
         foreach ($data as $value) {
-            if(is_array($value)) {
+            if (is_array($value)) {
                 $flattened = array_merge($flattened, $this->flattenData($value));
                 continue;
             }

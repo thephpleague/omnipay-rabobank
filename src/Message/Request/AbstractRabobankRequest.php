@@ -15,7 +15,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     const POST = 'POST';
     const GET = 'GET';
 
-    static $accessToken;
+    protected static $accessToken;
 
     /**
      * @var string
@@ -101,14 +101,14 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     protected function sendRequest($method, $endpoint, array $data = null, array $headers = [])
     {
         if (!isset($headers['Authorization'])) {
-            $headers['Authorization'] = 'Bearer ' . $this->getAccessToken();
+            $headers['Authorization'] = 'Bearer '.$this->getAccessToken();
         }
 
         $headers['Content-Type'] = $this->getRequestContentType();
 
         $response = $this->httpClient->request(
             $method,
-            $this->getBaseUrl() . $endpoint,
+            $this->getBaseUrl().$endpoint,
             $headers,
             ($data === null || $data === []) ? null : json_encode($data)
         );
@@ -119,7 +119,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     protected function fetchAccessToken()
     {
         $data = $this->sendRequest(self::GET, $this->refreshEndpoint, null, [
-            'Authorization' => 'Bearer ' . $this->gateway->getRefreshToken(),
+            'Authorization' => 'Bearer '.$this->gateway->getRefreshToken(),
         ]);
 
         return $data['token'];

@@ -14,8 +14,8 @@ use Omnipay\Rabobank\Message\Response\PurchaseResponse;
 class PurchaseRequest extends AbstractRabobankRequest
 {
 
-    CONST PAYMENT_METHOD_ENFORCE_ONCE = 'FORCE_ONCE';
-    CONST PAYMENT_METHOD_ENFORCE_ALWAYS = 'FORCE_ALWAYS';
+    const PAYMENT_METHOD_ENFORCE_ONCE = 'FORCE_ONCE';
+    const PAYMENT_METHOD_ENFORCE_ALWAYS = 'FORCE_ALWAYS';
 
     public function initialize(array $parameters = [])
     {

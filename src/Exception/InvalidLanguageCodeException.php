@@ -2,6 +2,7 @@
 
 namespace Omnipay\Rabobank\Exception;
 
-class InvalidLanguageCodeException extends InvalidArgumentException {
+class InvalidLanguageCodeException extends InvalidArgumentException
+{
 
 }

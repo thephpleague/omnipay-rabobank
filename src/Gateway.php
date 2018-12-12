@@ -62,16 +62,21 @@ class Gateway extends AbstractGateway
     {
         $data = $this->massageSignatureData($data);
 
-        return hash_hmac(static::SIGNING_HASH_ALGORITHM, implode(',', $data), base64_decode($this->getParameter('signingKey')));
+        return hash_hmac(
+            static::SIGNING_HASH_ALGORITHM,
+            implode(',', $data),
+            base64_decode($this->getParameter('signingKey'))
+        );
     }
 
     protected function massageSignatureData(array $data)
     {
-        return array_map(function($value) {
-            if(is_bool($value)) {
+        return array_map(function ($value) {
+            if (is_bool($value)) {
                 return $value ? 'true' : 'false';
             }
-            return (string) $value;
+
+            return (string)$value;
         }, $data);
     }
 
@@ -105,6 +110,4 @@ class Gateway extends AbstractGateway
 
         return $obj->initialize(array_replace($this->getParameters(), $parameters));
     }
-
-
 }

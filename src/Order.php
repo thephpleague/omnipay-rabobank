@@ -2,8 +2,8 @@
 
 namespace Omnipay\Rabobank;
 
-class Order {
-
+class Order
+{
     /**
      * OrderId as delivered during the PurchaseRequest
      *
@@ -64,5 +64,4 @@ class Order {
      * @var array
      */
     public $totalAmount;
-
 }

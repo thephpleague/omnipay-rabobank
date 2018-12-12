@@ -2,7 +2,6 @@
 
 namespace Omnipay\Rabobank\Message\Request;
 
-
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Rabobank\Message\Response\StatusResponse;
@@ -37,6 +36,7 @@ class StatusRequest extends AbstractRabobankRequest
     public function getData()
     {
         $this->validate('notificationToken');
+
         return [];
     }
 
@@ -48,8 +48,13 @@ class StatusRequest extends AbstractRabobankRequest
     public function sendData($data)
     {
         $headers = [];
-        $headers['Authorization'] = 'Bearer ' . $this->getNotificationToken();
-        $response = $this->sendRequest(self::GET, 'server/api/events/results/merchant.order.status.changed', $data, $headers);
+        $headers['Authorization'] = 'Bearer '.$this->getNotificationToken();
+        $response = $this->sendRequest(
+            self::GET,
+            'server/api/events/results/merchant.order.status.changed',
+            $data,
+            $headers
+        );
 
         return $this->response = new StatusResponse($this, $response);
     }

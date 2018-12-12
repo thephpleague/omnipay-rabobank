@@ -26,5 +26,4 @@ class PurchaseResponse extends AbstractRabobankResponse implements RedirectRespo
     {
         return $this->data['redirectUrl'];
     }
-
 }

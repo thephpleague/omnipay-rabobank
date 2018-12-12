@@ -15,8 +15,9 @@ class StatusResponse extends AbstractRabobankResponse
      *
      * @return bool
      */
-    public function getMoreStatusesAvailable() {
-        return (bool) $this->data['moreOrderResultsAvailable'];
+    public function getMoreStatusesAvailable()
+    {
+        return (bool)$this->data['moreOrderResultsAvailable'];
     }
 
     /**
@@ -25,7 +26,7 @@ class StatusResponse extends AbstractRabobankResponse
     public function getOrders()
     {
         $orders = [];
-        foreach ((array) $this->data['orderResults'] as $orderResult) {
+        foreach ((array)$this->data['orderResults'] as $orderResult) {
             $order = new Order();
 
             foreach ($orderResult as $field => $value) {
@@ -37,5 +38,4 @@ class StatusResponse extends AbstractRabobankResponse
 
         return $orders;
     }
-
 }
