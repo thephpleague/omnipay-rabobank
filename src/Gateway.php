@@ -3,66 +3,111 @@
 namespace Omnipay\Rabobank;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\Rabobank\Message\Request\PurchaseRequest;
+use Omnipay\Rabobank\Message\Request\StatusRequest;
 
 /**
  * Rabobank Gateway
  *
- * @link http://www.rabobank.nl/images/integratiehandleiding_en_12_2013_29451215.pdf
+ * @link https://www.rabobank.nl/images/handleiding-api-koppeling-rabo-smartpin-en_29970886.pdf
  */
 class Gateway extends AbstractGateway
 {
+    const SIGNING_HASH_ALGORITHM = 'sha512';
+
     public function getName()
     {
         return 'Rabobank OmniKassa';
     }
 
-    public function getDefaultParameters()
+    /**
+     * @return string
+     */
+    public function getSigningKey()
     {
-        return array(
-            'merchantId' => '',
-            'keyVersion' => '',
-            'secretKey' => '',
-            'testMode' => false,
+        return $this->getParameter('signingKey');
+    }
+
+    /**
+     * @param string $value
+     * @return Gateway
+     */
+    public function setSigningKey($value)
+    {
+        return $this->setParameter('signingKey', $value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefreshToken()
+    {
+        return $this->getParameter('refreshToken');
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setRefreshToken($value)
+    {
+        return $this->setParameter('refreshToken', $value);
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    public function generateSignature(array $data)
+    {
+        $data = $this->massageSignatureData($data);
+
+        return hash_hmac(
+            static::SIGNING_HASH_ALGORITHM,
+            implode(',', $data),
+            base64_decode($this->getParameter('signingKey'))
         );
     }
 
-    public function getMerchantId()
+    protected function massageSignatureData(array $data)
     {
-        return $this->getParameter('merchantId');
+        return array_map(function ($value) {
+            if (is_bool($value)) {
+                return $value ? 'true' : 'false';
+            }
+
+            return (string)$value;
+        }, $data);
     }
 
-    public function setMerchantId($value)
+    /**
+     * @param  array $parameters
+     * @return PurchaseRequest
+     */
+    public function purchase(array $parameters = [])
     {
-        return $this->setParameter('merchantId', $value);
+        /** @var PurchaseRequest $request */
+        $request = $this->createRequest(PurchaseRequest::class, $parameters);
+
+        return $request;
     }
 
-    public function getKeyVersion()
+    /**
+     * @param  array $parameters
+     * @return StatusRequest
+     */
+    public function status(array $parameters = [])
     {
-        return $this->getParameter('keyVersion');
+        /** @var StatusRequest $request */
+        $request = $this->createRequest(StatusRequest::class, $parameters);
+
+        return $request;
     }
 
-    public function setKeyVersion($value)
+    protected function createRequest($class, array $parameters)
     {
-        return $this->setParameter('keyVersion', $value);
-    }
+        $obj = new $class($this->httpClient, $this->httpRequest, $this);
 
-    public function getSecretKey()
-    {
-        return $this->getParameter('secretKey');
-    }
-
-    public function setSecretKey($value)
-    {
-        return $this->setParameter('secretKey', $value);
-    }
-
-    public function purchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\Rabobank\Message\PurchaseRequest', $parameters);
-    }
-
-    public function completePurchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\Rabobank\Message\CompletePurchaseRequest', $parameters);
+        return $obj->initialize(array_replace($this->getParameters(), $parameters));
     }
 }

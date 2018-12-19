@@ -1,4 +1,4 @@
-# Omnipay: Rabobank OmniKassa
+# Omnipay: Rabobank OmniKassa V2
 
 **Rabobank OmniKassa driver for the Omnipay PHP payment processing library**
 
@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/omnipay/rabobank/d/total.png)](https://packagist.org/packages/omnipay/rabobank)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements Rabobank OmniKassa support for Omnipay.
+processing library for PHP 5.6+. This package implements Rabobank OmniKassa V2 support for Omnipay.
 
 ## Installation
 
@@ -35,6 +35,23 @@ The following gateways are provided by this package:
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
+
+
+## Updating to V2
+
+In order to upgrade to Omnikassa V2 you need the following codes:
+
+* `RefreshToken`
+* `SigningKey`
+
+You can look those up in your Omnikassa V2 Dashboard. See the [documentation on rabobank.nl](https://www.rabobank.nl/images/handleiding-signing-key-en-refresh-token-ophalen_29951774.pdf).
+
+
+1. The `Merchant ID` and `Key Version` parameters are not needed anymore. The refresh token is the new merchant identification.
+2. It's not possible anymore to provide more then one Payment Method per purchase by separating them with a comma. (eg. `IDEAL,CARDS`)
+3. There is no option anymore for providing a notice URL per purchase. The notice URL needs to be configured in the Omnikassa V2 Dashboard.
+4. The notify `POST` doesn't have any status information about the order anymore. You can fetch information about orders by making a `StatusRequest`. You'll need the ``notificationToken`` that's received in the notification `POST`.  
+Make sure you fetch all open order statuses by checking the ``moreOrderResultsAvailable`` parameter in the response. If set to true, make another `StatusRequest` with the same `notificationToken`, until ``moreOrderResultsAvailable`` is `false`.
 
 ## Support
 
