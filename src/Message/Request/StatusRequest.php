@@ -51,7 +51,7 @@ class StatusRequest extends AbstractRabobankRequest
         $headers['Authorization'] = 'Bearer '.$this->getNotificationToken();
         $response = $this->sendRequest(
             self::GET,
-            'server/api/events/results/merchant.order.status.changed',
+            'order/server/api/events/results/merchant.order.status.changed',
             $data,
             $headers
         );
