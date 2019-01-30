@@ -44,8 +44,10 @@ class AbstractRabobankResponse extends AbstractResponse
             return;
         }
         
+        $redirectUrl = !empty($this->data['redirectUrl']) ? $this->data['redirectUrl'] : '';
+        
         $signatureData = [
-            'redirectUrl' => $this->data['redirectUrl'],
+            'redirectUrl' => $redirectUrl,
         ];
 
         $signature = $this->request->gateway->generateSignature($this->flattenData($signatureData));
