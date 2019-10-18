@@ -2,6 +2,7 @@
 
 namespace Omnipay\Rabobank\Message\Request;
 
+use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Http\ClientInterface;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Rabobank\Gateway;
@@ -122,6 +123,10 @@ abstract class AbstractRabobankRequest extends AbstractRequest
             'Authorization' => 'Bearer '.$this->gateway->getRefreshToken(),
         ]);
 
+        if (!isset($data['token'])) {
+            throw new InvalidResponseException($data['consumerMessage']);
+        }
+        
         return $data['token'];
     }
 
