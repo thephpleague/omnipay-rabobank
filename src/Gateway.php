@@ -3,6 +3,7 @@
 namespace Omnipay\Rabobank;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\Rabobank\Message\Request\CompletePurchaseRequest;
 use Omnipay\Rabobank\Message\Request\PurchaseRequest;
 use Omnipay\Rabobank\Message\Request\StatusRequest;
 
@@ -92,6 +93,11 @@ class Gateway extends AbstractGateway
         return $request;
     }
 
+    public function completePurchase(array $parameters = [])
+    {
+
+    }
+
     /**
      * @param  array $parameters
      * @return StatusRequest
@@ -99,7 +105,7 @@ class Gateway extends AbstractGateway
     public function status(array $parameters = [])
     {
         /** @var StatusRequest $request */
-        $request = $this->createRequest(StatusRequest::class, $parameters);
+        $request = $this->createRequest(CompletePurchaseRequest::class, $parameters);
 
         return $request;
     }
