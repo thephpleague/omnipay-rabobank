@@ -95,7 +95,10 @@ class Gateway extends AbstractGateway
 
     public function completePurchase(array $parameters = [])
     {
+        /** @var CompletePurchaseRequest $request */
+        $request = $this->createRequest(CompletePurchaseRequest::class, $parameters);
 
+        return $request;
     }
 
     /**
@@ -105,7 +108,7 @@ class Gateway extends AbstractGateway
     public function status(array $parameters = [])
     {
         /** @var StatusRequest $request */
-        $request = $this->createRequest(CompletePurchaseRequest::class, $parameters);
+        $request = $this->createRequest(StatusRequest::class, $parameters);
 
         return $request;
     }
