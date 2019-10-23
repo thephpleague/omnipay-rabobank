@@ -124,7 +124,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
         ]);
 
         if (!isset($data['token'])) {
-            throw new InvalidResponseException($data['consumerMessage']);
+            throw new InvalidResponseException($data['consumerMessage'], $data['errorCode']);
         }
         
         return $data['token'];
