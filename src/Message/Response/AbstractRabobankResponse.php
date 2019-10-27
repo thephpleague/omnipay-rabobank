@@ -3,6 +3,7 @@
 namespace Omnipay\Rabobank\Message\Response;
 
 use Omnipay\Common\Message\AbstractResponse;
+use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Rabobank\Exception\InvalidSignatureException;
 use Omnipay\Rabobank\Message\Request\AbstractRabobankRequest;
 
@@ -18,10 +19,12 @@ class AbstractRabobankResponse extends AbstractResponse
      * @param array $data
      *
      * @throws InvalidSignatureException
+     * @throws InvalidResponseException
      */
     public function __construct(AbstractRabobankRequest $request, $data)
     {
         parent::__construct($request, $data);
+        $this->validateResponse();
         $this->validateSignature();
     }
 
@@ -33,6 +36,18 @@ class AbstractRabobankResponse extends AbstractResponse
     public function isSuccessful()
     {
         return isset($this->data['signature']);
+    }
+
+    /**
+     * Check if we've received an error
+     *
+     * @throws InvalidResponseException
+     */
+    protected function validateResponse()
+    {
+        if (isset($this->data['errorCode']) && isset($this->data['consumerMessage'])) {
+            throw new InvalidResponseException($this->data['consumerMessage'], $this->data['errorCode']);
+        }
     }
 
     /**
