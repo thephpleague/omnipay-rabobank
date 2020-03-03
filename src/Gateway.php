@@ -90,7 +90,7 @@ class Gateway extends AbstractGateway
      */
     protected function flattenSignatureData($data)
     {
-        return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data)), FALSE);
+        return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data)), false);
     }
 
     /**
