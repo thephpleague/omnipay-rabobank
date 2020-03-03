@@ -52,40 +52,6 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     /**
      * @return string
      */
-    public function getSigningKey()
-    {
-        return $this->getParameter('signingKey');
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setSigningKey($value)
-    {
-        return $this->setParameter('signingKey', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRefreshToken()
-    {
-        return $this->getParameter('refreshToken');
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setRefreshToken($value)
-    {
-        return $this->setParameter('refreshToken', $value);
-    }
-
-    /**
-     * @return string
-     */
     public function getAccessToken()
     {
         if (!isset(self::$accessToken)) {

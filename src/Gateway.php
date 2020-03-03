@@ -22,17 +22,6 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * @return array
-     */
-    public function getDefaultParameters()
-    {
-        return array(
-            'signingKey' => '',
-            'refreshToken' => '',
-        );
-    }
-
-    /**
      * @return string
      */
     public function getSigningKey()
