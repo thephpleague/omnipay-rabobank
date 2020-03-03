@@ -2,6 +2,7 @@
 
 namespace Omnipay\Rabobank\Message;
 
+use Omnipay\Common\CreditCard;
 use Omnipay\Rabobank\Gateway;
 use Omnipay\Rabobank\Message\Request\PurchaseRequest;
 use Omnipay\Rabobank\Message\Response\PurchaseResponse;
@@ -50,6 +51,16 @@ class PurchaseRequestTest extends TestCase
         $this->request->setOrderId('6');
         $this->request->setLanguageCode('EN');
 
+        $card = new CreditCard([
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'address1' => 'Main street 123',
+            'postcode' => '1234AA',
+            'city' => 'Anytown',
+            'country' => 'NL'
+        ]);
+        $this->request->setCard($card);
+
         $data = $this->request->getData();
 
         $this->assertRegExp('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
@@ -61,6 +72,15 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals('EN', $data['language']);
         $this->assertEquals('', $data['description']);
         $this->assertEquals('https://www.example.com/return', $data['merchantReturnURL']);
+        $this->assertEquals(array(
+            'firstName' => 'John',
+            'middleName' => '',
+            'lastName' => 'Doe',
+            'street' => 'Main street 123',
+            'postalCode' => '1234AA',
+            'city' => 'Anytown',
+            'countryCode' => 'NL',
+        ), $data['shippingDetail']);
         $this->assertEquals('IDEAL', $data['paymentBrand']);
         $this->assertEquals('FORCE_ONCE', $data['paymentBrandForce']);
 
@@ -72,6 +92,13 @@ class PurchaseRequestTest extends TestCase
             'EN',
             '',
             'https://www.example.com/return',
+            'John',
+            '',
+            'Doe',
+            'Main street 123',
+            '1234AA',
+            'Anytown',
+            'NL',
             'IDEAL',
             'FORCE_ONCE'
         );
