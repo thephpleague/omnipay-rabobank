@@ -146,6 +146,19 @@ class PurchaseRequest extends AbstractRabobankRequest
             $data['paymentBrandForce'] = $this->getEnforcePaymentMethod();
         }
 
+        $card = $this->getCard();
+        if (isset($card)) {
+            $data['shippingDetail'] = [
+                'firstName' => (string)$card->getFirstName(),
+                'middleName' => '',
+                'lastName' => (string)$card->getLastName(),
+                'street' => (string)$card->getAddress1(),
+                'postalCode' => (string)$card->getPostcode(),
+                'city' => (string)$card->getCity(),
+                'countryCode' => (string)$card->getCountry(),
+            ];
+        }
+
         $data['signature'] = $this->generateSignature($data);
 
         return $data;
@@ -174,6 +187,10 @@ class PurchaseRequest extends AbstractRabobankRequest
             isset($requestData['description']) ? $requestData['description'] : '',
             $requestData['merchantReturnURL'],
         ];
+
+        if (isset($requestData['shippingDetail'])) {
+            $signatureData[] = $requestData['shippingDetail'];
+        }
 
         if (isset($requestData['paymentBrand'])) {
             $signatureData[] = $requestData['paymentBrand'];

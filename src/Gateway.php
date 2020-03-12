@@ -72,6 +72,7 @@ class Gateway extends AbstractGateway
      */
     public function generateSignature(array $data)
     {
+        $data = $this->flattenSignatureData($data);
         $data = $this->massageSignatureData($data);
 
         return hash_hmac(
@@ -90,6 +91,17 @@ class Gateway extends AbstractGateway
 
             return (string)$value;
         }, $data);
+    }
+
+    /**
+     * Flattens signature data
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function flattenSignatureData($data)
+    {
+        return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data)), false);
     }
 
     /**
