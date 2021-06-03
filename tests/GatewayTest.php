@@ -2,15 +2,10 @@
 
 namespace Omnipay\Rabobank;
 
-use Omnipay\Rabobank\Gateway;
 use Omnipay\Rabobank\Message\Request\PurchaseRequest;
 use Omnipay\Rabobank\Message\Request\StatusRequest;
 use Omnipay\Tests\GatewayTestCase;
 
-/**
- * @method assertInstanceOf($string, $request)
- * @method assertSame($int, $getAmountInteger)
- */
 class GatewayTest extends GatewayTestCase
 {
     /**
@@ -18,7 +13,7 @@ class GatewayTest extends GatewayTestCase
      */
     protected $gateway;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

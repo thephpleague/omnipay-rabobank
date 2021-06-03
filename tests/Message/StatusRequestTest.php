@@ -8,14 +8,6 @@ use Omnipay\Rabobank\Message\Response\StatusResponse;
 use Omnipay\Rabobank\Order;
 use Omnipay\Tests\TestCase;
 
-/**
- * @method assertRegExp($string, $timestamp)
- * @method assertEquals($string, $merchantOrderId)
- * @method assertInstanceOf($string, $response)
- * @method assertFalse($isSuccessful)
- * @method assertTrue($isRedirect)
- * @method assertCount($int, array $getOrders)
- */
 class StatusRequestTest extends TestCase
 {
     /**
@@ -28,7 +20,7 @@ class StatusRequestTest extends TestCase
      */
     protected $request;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->gateway = new Gateway();
         $this->gateway->setSigningKey(base64_encode('secret'));
@@ -37,13 +29,13 @@ class StatusRequestTest extends TestCase
         $this->request->initialize(array('notificationToken' => 'token'));
     }
 
-    public function testGetData()
+    public function testGetData(): void
     {
         $data = $this->request->getData();
         $this->assertEquals([], $data);
     }
 
-    public function testSendSuccess()
+    public function testSendSuccess(): void
     {
         $this->setMockHttpResponse('StatusSuccess.txt');
 

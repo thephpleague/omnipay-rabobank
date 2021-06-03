@@ -3,18 +3,14 @@
 namespace Omnipay\Rabobank\Message;
 
 use Omnipay\Common\CreditCard;
+use Omnipay\Rabobank\Exception\DescriptionToLongException;
+use Omnipay\Rabobank\Exception\InvalidLanguageCodeException;
+use Omnipay\Rabobank\Exception\InvalidSignatureException;
 use Omnipay\Rabobank\Gateway;
 use Omnipay\Rabobank\Message\Request\PurchaseRequest;
 use Omnipay\Rabobank\Message\Response\PurchaseResponse;
 use Omnipay\Tests\TestCase;
 
-/**
- * @method assertRegExp($string, $timestamp)
- * @method assertEquals($string, $merchantOrderId)
- * @method assertInstanceOf($string, $response)
- * @method assertFalse($isSuccessful)
- * @method assertTrue($isRedirect)
- */
 class PurchaseRequestTest extends TestCase
 {
     /**
@@ -27,7 +23,7 @@ class PurchaseRequestTest extends TestCase
      */
     protected $request;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->gateway = new Gateway();
         $this->gateway->setSigningKey(base64_encode('secret'));
@@ -45,7 +41,7 @@ class PurchaseRequestTest extends TestCase
         $this->request->setAccessToken('secret');
     }
 
-    public function testGetData()
+    public function testGetData(): void
     {
         $this->request->setPaymentMethod('IDEAL');
         $this->request->setOrderId('6');
@@ -63,7 +59,7 @@ class PurchaseRequestTest extends TestCase
 
         $data = $this->request->getData();
 
-        $this->assertRegExp('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
+        $this->assertMatchesRegularExpression('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
         $this->assertEquals('6', $data['merchantOrderId']);
         $this->assertEquals(array(
             'amount' => 1000,
@@ -107,7 +103,7 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals($signature, $data['signature']);
     }
 
-    public function testBaseUrl()
+    public function testBaseUrl(): void
     {
         $this->gateway->setTestMode(false);
         $this->assertEquals('https://betalen.rabobank.nl/omnikassa-api/', $this->request->getBaseUrl());
@@ -117,7 +113,7 @@ class PurchaseRequestTest extends TestCase
 
     }
 
-    public function testDescription()
+    public function testDescription(): void
     {
         $this->request->setDescription('a description');
         $data = $this->request->getData();
@@ -125,16 +121,15 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals('a description', $data['description']);
     }
 
-    /**
-     * @expectedException \Omnipay\Rabobank\Exception\DescriptionToLongException
-     * @expectedExceptionMessage Description can only be 35 characters long
-     */
-    public function testDescriptionToLong()
+    public function testDescriptionToLong(): void
     {
+        $this->expectException(DescriptionToLongException::class);
+        $this->expectExceptionMessage('Description can only be 35 characters long');
+
         $this->request->setDescription('a very long description that is longer then 35 characters that is not allowed');
     }
 
-    public function testLanguageCode()
+    public function testLanguageCode(): void
     {
         $this->request->setLanguageCode('EN');
         $data = $this->request->getData();
@@ -142,16 +137,15 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals('EN', $data['language']);
     }
 
-    /**
-     * @expectedException \Omnipay\Rabobank\Exception\InvalidLanguageCodeException
-     * @expectedExceptionMessage Language code must be a valid ISO 639-1 language code
-     */
-    public function testLanguageCodeInvalid()
+    public function testLanguageCodeInvalid(): void
     {
+        $this->expectException(InvalidLanguageCodeException::class);
+        $this->expectExceptionMessage('Language code must be a valid ISO 639-1 language code');
+
         $this->request->setLanguageCode('ENG');
     }
 
-    public function testSendSuccess()
+    public function testSendSuccess(): void
     {
         $this->setMockHttpResponse('PurchaseSuccess.txt');
 
@@ -167,16 +161,15 @@ class PurchaseRequestTest extends TestCase
         $this->assertEquals('https://www.example.com/redirect', $response->getRedirectUrl());
     }
 
-    /**
-     * @expectedException \Omnipay\Rabobank\Exception\InvalidSignatureException
-     * @expectedExceptionMessage Signature returned from server is invalid
-     */
-    public function testSendInvalidSignature()
+    public function testSendInvalidSignature(): void
     {
         $this->setMockHttpResponse('PurchaseInvalidSignature.txt');
 
         $this->request->setPaymentMethod('IDEAL');
         $this->request->setOrderId('6');
+
+        $this->expectException(InvalidSignatureException::class);
+        $this->expectExceptionMessage('Signature returned from server is invalid');
 
         $this->request->send();
     }
