@@ -2,8 +2,7 @@
 
 **Rabobank OmniKassa driver for the Omnipay PHP payment processing library**
 
-[![Build Status](https://travis-ci.org/thephpleague/omnipay-rabobank.png?branch=master)](https://travis-ci.org/thephpleague/omnipay-rabobank)
-[![Latest Stable Version](https://poser.pugx.org/omnipay/rabobank/version.png)](https://packagist.org/packages/omnipay/rabobank)
+[![Unit Tests](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml/badge.svg)](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml)[![Latest Stable Version](https://poser.pugx.org/omnipay/rabobank/version.png)](https://packagist.org/packages/omnipay/rabobank)
 [![Total Downloads](https://poser.pugx.org/omnipay/rabobank/d/total.png)](https://packagist.org/packages/omnipay/rabobank)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
@@ -11,21 +10,12 @@ processing library for PHP 5.6+. This package implements Rabobank OmniKassa V2 s
 
 ## Installation
 
-Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it
-to your `composer.json` file:
+Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply require `league/omnipay` and `omnipay/rabobank` with Composer:
 
-```json
-{
-    "require": {
-        "omnipay/rabobank": "~2.0"
-    }
-}
+```
+composer require league/omnipay omnipay/rabobank
 ```
 
-And run composer to update your dependencies:
-
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar update
 
 ## Basic Usage
 
