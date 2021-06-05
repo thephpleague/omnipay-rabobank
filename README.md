@@ -2,11 +2,12 @@
 
 **Rabobank OmniKassa driver for the Omnipay PHP payment processing library**
 
-[![Unit Tests](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml/badge.svg)](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml)[![Latest Stable Version](https://poser.pugx.org/omnipay/rabobank/version.png)](https://packagist.org/packages/omnipay/rabobank)
+[![Unit Tests](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml/badge.svg)](https://github.com/thephpleague/omnipay-rabobank/actions/workflows/run-tests.yml)
+[![Latest Stable Version](https://poser.pugx.org/omnipay/rabobank/version.png)](https://packagist.org/packages/omnipay/rabobank)
 [![Total Downloads](https://poser.pugx.org/omnipay/rabobank/d/total.png)](https://packagist.org/packages/omnipay/rabobank)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.6+. This package implements Rabobank OmniKassa V2 support for Omnipay.
+processing library for PHP PHP. This package implements Rabobank OmniKassa V2 support for Omnipay.
 
 ## Installation
 
