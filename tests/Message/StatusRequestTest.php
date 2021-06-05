@@ -22,6 +22,8 @@ class StatusRequestTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->gateway = new Gateway();
         $this->gateway->setSigningKey(base64_encode('secret'));
 
