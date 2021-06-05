@@ -59,7 +59,7 @@ class PurchaseRequestTest extends TestCase
 
         $data = $this->request->getData();
 
-        $this->assertMatchesRegularExpression('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
+        $this->assertRegExp('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
         $this->assertEquals('6', $data['merchantOrderId']);
         $this->assertEquals(array(
             'amount' => 1000,
