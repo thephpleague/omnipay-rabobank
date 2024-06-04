@@ -122,6 +122,22 @@ class PurchaseRequest extends AbstractRabobankRequest
         return $this->setParameter('enforcePaymentMethod', $value);
     }
 
+    /**
+     * @return null|int
+     */
+    public function getPaymentBrandMetaDataIssuerId()
+    {
+        return $this->getParameter('paymentBrandMetaDataIssuerId');
+    }
+
+    /**
+     * @param null|int $value
+     * @return $this
+     */
+    public function setPaymentBrandMetaDataIssuerId($value)
+    {
+        return $this->setParameter('paymentBrandMetaDataIssuerId', $value);
+    }
 
     /**
      * @return array
@@ -141,9 +157,11 @@ class PurchaseRequest extends AbstractRabobankRequest
         $data['merchantReturnURL'] = $this->getReturnUrl();
         $data['paymentBrand'] = $this->getPaymentMethod();
 
-        // PaymentBrandForce should only be set when there is a PaymentBrand
         if ($data['paymentBrand']) {
             $data['paymentBrandForce'] = $this->getEnforcePaymentMethod();
+            $data['paymentBrandMetaData'] = [
+                'issuerId' => $this->getPaymentBrandMetaDataIssuerId(),
+            ];
         }
 
         $card = $this->getCard();
