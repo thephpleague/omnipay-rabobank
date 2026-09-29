@@ -19,6 +19,8 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     protected static $accessToken;
 
     /**
+     * Live API URL; the gateway's `baseUrl` parameter overrides it.
+     *
      * @var string
      */
     protected $baseUrl = 'https://betalen.rabobank.nl/omnikassa-api/';
@@ -111,6 +113,12 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      */
     public function getBaseUrl()
     {
+        $customBaseUrl = $this->gateway->getBaseUrl();
+        if ($customBaseUrl) {
+            // Endpoints are appended without a leading slash
+            return rtrim($customBaseUrl, '/').'/';
+        }
+
         if ($this->gateway->getTestMode()) {
             return $this->baseUrlTesting;
         }
@@ -133,7 +141,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      * @param array $headers
      * @return array
      */
-    protected function sendRequest($method, $endpoint, array $data = null, array $headers = [])
+    protected function sendRequest($method, $endpoint, ?array $data = null, array $headers = [])
     {
         if (!isset($headers['Authorization'])) {
             $headers['Authorization'] = 'Bearer '.$this->getAccessToken();

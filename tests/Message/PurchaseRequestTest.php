@@ -61,7 +61,7 @@ class PurchaseRequestTest extends TestCase
 
         $data = $this->request->getData();
 
-        $this->assertRegExp('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
+        $this->assertMatchesRegularExpression('/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(\+|-)\d{2}(:?\d{2})?)$/', $data['timestamp']);
         $this->assertEquals('6', $data['merchantOrderId']);
         $this->assertEquals(array(
             'amount' => 1000,
@@ -113,6 +113,29 @@ class PurchaseRequestTest extends TestCase
         $this->gateway->setTestMode(true);
         $this->assertEquals('https://betalen.rabobank.nl/omnikassa-api-sandbox/', $this->request->getBaseUrl());
 
+    }
+
+    public function testGatewayBaseUrlTakesPrecedenceOverTestMode(): void
+    {
+        $this->gateway->setTestMode(true);
+        $this->gateway->setBaseUrl('http://localhost:8080/omnikassa-api/');
+
+        $this->assertEquals('http://localhost:8080/omnikassa-api/', $this->request->getBaseUrl());
+    }
+
+    public function testGatewayBaseUrlIsNormalisedToTrailingSlash(): void
+    {
+        $this->gateway->setBaseUrl('http://localhost:8080');
+
+        $this->assertEquals('http://localhost:8080/', $this->request->getBaseUrl());
+    }
+
+    public function testEmptyGatewayBaseUrlFallsBackToTestModeUrl(): void
+    {
+        $this->gateway->setTestMode(true);
+        $this->gateway->setBaseUrl('');
+
+        $this->assertEquals('https://betalen.rabobank.nl/omnikassa-api-sandbox/', $this->request->getBaseUrl());
     }
 
     public function testDescription(): void

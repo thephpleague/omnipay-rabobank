@@ -27,6 +27,15 @@ The following gateways are provided by this package:
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
 
+### Custom API base URL
+
+By default requests go to the live OmniKassa API, or to the sandbox when `testMode` is enabled. To point the
+gateway at another endpoint, such as a local mock server, set `baseUrl`; it takes precedence over `testMode`:
+
+```php
+$gateway->setBaseUrl('http://localhost:8080/omnikassa-api/');
+```
+
 
 ## Updating to V2
 

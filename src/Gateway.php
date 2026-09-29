@@ -67,6 +67,25 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * @return string|null
+     */
+    public function getBaseUrl()
+    {
+        return $this->getParameter('baseUrl');
+    }
+
+    /**
+     * Overrides the OmniKassa API base URL (e.g. to target a mock server); takes precedence over testMode.
+     *
+     * @param string|null $value
+     * @return $this
+     */
+    public function setBaseUrl($value)
+    {
+        return $this->setParameter('baseUrl', $value);
+    }
+
+    /**
      * @param array $data
      * @return string
      */
