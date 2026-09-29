@@ -16,6 +16,14 @@ class Gateway extends AbstractGateway
 {
     const SIGNING_HASH_ALGORITHM = 'sha512';
 
+    /**
+     * Cached OmniKassa access token, shared by all requests created by this gateway.
+     * Deliberately not a parameter: parameters are copied into every request.
+     *
+     * @var string|null
+     */
+    private $accessToken;
+
     public function getName()
     {
         return 'Rabobank OmniKassa';
@@ -63,7 +71,41 @@ class Gateway extends AbstractGateway
      */
     public function setRefreshToken($value)
     {
+        $this->accessToken = null;
+
         return $this->setParameter('refreshToken', $value);
+    }
+
+    /**
+     * The cached access token belongs to the live or sandbox environment it was fetched from.
+     *
+     * @param bool $value
+     * @return $this
+     */
+    public function setTestMode($value)
+    {
+        $this->accessToken = null;
+
+        return parent::setTestMode($value);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @param string|null $value
+     * @return $this
+     */
+    public function setAccessToken($value)
+    {
+        $this->accessToken = $value;
+
+        return $this;
     }
 
     /**

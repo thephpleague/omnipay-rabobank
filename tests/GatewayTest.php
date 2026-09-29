@@ -40,6 +40,46 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('secret', $request->getNotificationToken());
     }
 
+    public function testRequestsFromOneGatewayShareASingleAccessToken()
+    {
+        $gateway = $this->createGatewayWithRefreshToken('refresh-a');
+        $this->setMockHttpResponse('RefreshSuccess.txt');
+
+        $this->assertSame('access-token', $gateway->purchase()->getAccessToken());
+        $this->assertSame('access-token', $gateway->purchase()->getAccessToken());
+        $this->assertSame(['Bearer refresh-a'], $this->authorizationHeadersSent());
+    }
+
+    public function testEachGatewayFetchesItsOwnAccessToken()
+    {
+        $first = $this->createGatewayWithRefreshToken('refresh-a');
+        $second = $this->createGatewayWithRefreshToken('refresh-b');
+        $this->setMockHttpResponse(['RefreshSuccess.txt', 'RefreshSuccess.txt']);
+
+        $first->purchase()->getAccessToken();
+        $second->purchase()->getAccessToken();
+
+        $this->assertSame(['Bearer refresh-a', 'Bearer refresh-b'], $this->authorizationHeadersSent());
+    }
+
+    public function testSetRefreshTokenDiscardsCachedAccessToken()
+    {
+        $this->gateway->setAccessToken('access-token');
+
+        $this->gateway->setRefreshToken('refresh-b');
+
+        $this->assertNull($this->gateway->getAccessToken());
+    }
+
+    public function testSetTestModeDiscardsCachedAccessToken()
+    {
+        $this->gateway->setAccessToken('access-token');
+
+        $this->gateway->setTestMode(true);
+
+        $this->assertNull($this->gateway->getAccessToken());
+    }
+
     public function testGenerateSignature()
     {
         $data = [
@@ -75,5 +115,20 @@ class GatewayTest extends GatewayTestCase
 
         $expected = hash_hmac('sha512', implode(',', $signatureData), 'secret');
         $this->assertSame($expected, $this->gateway->generateSignature($data));
+    }
+
+    private function createGatewayWithRefreshToken($refreshToken)
+    {
+        $gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
+        $gateway->setRefreshToken($refreshToken);
+
+        return $gateway;
+    }
+
+    private function authorizationHeadersSent()
+    {
+        return array_map(function ($request) {
+            return $request->getHeaderLine('Authorization');
+        }, $this->getMockedRequests());
     }
 }

@@ -16,8 +16,6 @@ abstract class AbstractRabobankRequest extends AbstractRequest
     const POST = 'POST';
     const GET = 'GET';
 
-    protected static $accessToken;
-
     /**
      * @var string
      */
@@ -88,11 +86,11 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      */
     public function getAccessToken()
     {
-        if (!isset(self::$accessToken)) {
+        if ($this->gateway->getAccessToken() === null) {
             $this->setAccessToken($this->fetchAccessToken());
         }
 
-        return self::$accessToken;
+        return $this->gateway->getAccessToken();
     }
 
     /**
@@ -101,7 +99,7 @@ abstract class AbstractRabobankRequest extends AbstractRequest
      */
     public function setAccessToken($value)
     {
-        self::$accessToken = $value;
+        $this->gateway->setAccessToken($value);
 
         return $this;
     }
